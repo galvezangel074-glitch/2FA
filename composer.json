@@ -1,0 +1,9 @@
+{
+    "name": "utp/parcial-2fa",
+    "description": "Parcial práctico 2FA - Desarrollo Web (UTP)",
+    "type": "project",
+    "require": {
+        "php": ">=8.0",
+        "sonata-project/google-authenticator": "^2.3"
+    }
+}
