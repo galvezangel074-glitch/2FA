@@ -15,9 +15,9 @@ if (!$pre || (time() - (int) $pre['creada']) > $config['sesion_2fa_segundos']) {
 $mensaje = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (!TokenCsrf::validar('verificar_2fa', $_POST['csrf_token'] ?? null)) {
+    if (!CSRFProtection::validarToken($_POST['csrf_token'] ?? null)) {
         $mensaje = 'La sesión del formulario expiró. Intenta de nuevo.';
-        TokenCsrf::renovar('verificar_2fa');
+        CSRFProtection::regenerarToken();
     } else {
         $codigo = SanitizarEntrada::limpiarCodigo($_POST['codigo_2fa'] ?? '');
         $repo   = new RepositorioUsuarios(new mod_db('web'));
@@ -44,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             redireccionar('login.php?expirada=1');
         }
         $mensaje = 'Código incorrecto. Acceso denegado.';
-        TokenCsrf::renovar('verificar_2fa');
+        CSRFProtection::regenerarToken();
     }
 }
 
@@ -65,7 +65,7 @@ encabezado('Verificación en dos pasos');
         <?php endif; ?>
 
         <form method="post" action="verificar_2fa.php" autocomplete="off">
-            <?= TokenCsrf::campo('verificar_2fa') ?>
+            <?= CSRFProtection::campoHidden() ?>
             <div class="campo codigo-2fa">
                 <label for="codigo_2fa">Código de verificación</label>
                 <input type="text" id="codigo_2fa" name="codigo_2fa" inputmode="numeric" pattern="[0-9]{6}"

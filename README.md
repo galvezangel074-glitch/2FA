@@ -64,7 +64,7 @@ Registro (`registro.php`) → QR (`qr_registro.php`) → Login (`login.php`) →
 | Inicia sesión y pide el código antes de entrar | 5 | `login.php` → `verificar_2fa.php` |
 | Otra sesión que confirma la fase del código | 5 | `session_regenerate_id(true)` en cada fase; `panel.php` muestra las dos huellas de ID, distintas |
 | Interfaz para generar y validar hash (POO) | 5 | `clases/IGeneradorHash.php`, `clases/HashBcrypt.php` |
-| Tokens Anti-CSRF | 10 | `clases/TokenCsrf.php` en registro, login y verificación |
+| Tokens Anti-CSRF | 10 | `clases/CSRFProtection.php` en registro, login y verificación |
 | Tablas con datos limpios y consistentes (5 pts por tabla) | 10 | `usuarios` e `intentos_login` |
 | Calidad del CSS | 10 | `css/estilo.css` (azul, gris, verde), medidor de contraseña, ver/ocultar clave, pasos |
 

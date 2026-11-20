@@ -8,9 +8,9 @@ $errores  = [];
 $errorGeneral = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (!TokenCsrf::validar('registro', $_POST['csrf_token'] ?? null)) {
+    if (!CSRFProtection::validarToken($_POST['csrf_token'] ?? null)) {
         $errorGeneral = 'La sesión del formulario expiró. Intenta de nuevo.';
-        TokenCsrf::renovar('registro');
+        CSRFProtection::regenerarToken();
     } elseif ($form->validar()) {
         $db   = new mod_db('web');
         $repo = new RepositorioUsuarios($db);
@@ -28,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                              $hash->generar($form->clave()), $form->sexo(), $secret);
                 session_regenerate_id(true);
                 $_SESSION['registro_qr'] = ['correo' => $form->correo(), 'secret' => $secret];
-                TokenCsrf::renovar('registro');
+                CSRFProtection::regenerarToken();
                 redireccionar('qr_registro.php');
             } catch (PDOException $ex) {
                 // Dos registros simultáneos con el mismo correo: lo frena el índice UNIQUE
@@ -56,7 +56,7 @@ encabezado('Crear cuenta');
         <?php endif; ?>
 
         <form id="form-registro" method="post" action="registro.php" novalidate autocomplete="off">
-            <?= TokenCsrf::campo('registro') ?>
+            <?= CSRFProtection::campoHidden() ?>
 
             <div class="dos-columnas">
                 <div class="campo<?= claseCampo($errores, 'nombre') ?>" id="campo-nombre">

@@ -14,9 +14,9 @@ $correoPrevio = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $correoPrevio = SanitizarEntrada::limpiarIdentificador($_POST['usuario'] ?? '');
 
-    if (!TokenCsrf::validar('login', $_POST['csrf_token'] ?? null)) {
+    if (!CSRFProtection::validarToken($_POST['csrf_token'] ?? null)) {
         $mensaje = 'La sesión del formulario expiró. Intenta de nuevo.';
-        TokenCsrf::renovar('login');
+        CSRFProtection::regenerarToken();
     } else {
         $db    = new mod_db('web');
         $hash  = new HashBcrypt();
@@ -44,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             redireccionar('verificar_2fa.php');
         }
         $mensaje = 'Usuario/correo o contraseña incorrectos.';
-        TokenCsrf::renovar('login');
+        CSRFProtection::regenerarToken();
     }
 } else {
     unset($_SESSION['registro_qr'], $_SESSION['pre_2fa']);
@@ -71,7 +71,7 @@ encabezado('Iniciar sesión');
         <?php endif; ?>
 
         <form method="post" action="login.php" id="form-login" autocomplete="off">
-            <?= TokenCsrf::campo('login') ?>
+            <?= CSRFProtection::campoHidden() ?>
             <div class="campo">
                 <label for="usuario">Correo electrónico o usuario</label>
                 <input type="text" id="usuario" name="usuario" required maxlength="254" value="<?= e($correoPrevio) ?>" autofocus>

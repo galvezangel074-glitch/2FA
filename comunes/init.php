@@ -4,7 +4,7 @@ declare(strict_types=1);
 date_default_timezone_set('America/Panama');
 
 require_once __DIR__ . '/../vendor/autoload.php';
-foreach (['SanitizarEntrada', 'IGeneradorHash', 'HashBcrypt', 'TokenCsrf', 'FormularioRegistro',
+foreach (['SanitizarEntrada', 'IGeneradorHash', 'HashBcrypt', 'CSRFProtection', 'FormularioRegistro',
           'mysql.inc', 'RepositorioUsuarios', 'Autenticador2FA', 'objLoginAdmin'] as $clase) {
     require_once __DIR__ . '/../clases/' . $clase . '.php';
 }
