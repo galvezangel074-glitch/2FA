@@ -14,8 +14,7 @@ repositorio `EjemploLogin` visto en clase; aquí se amplió con 2FA, protección
 3. [Recorrido con capturas](#recorrido-con-capturas)
 4. [Seguridad implementada](#seguridad-implementada)
 5. [Estructura del proyecto](#estructura-del-proyecto)
-6. [Pasos de la guía y rúbrica](#pasos-de-la-guía-y-rúbrica)
-7. [Notas y limitaciones](#notas-y-limitaciones)
+6. [Notas y limitaciones](#notas-y-limitaciones)
 
 ---
 
@@ -208,42 +207,6 @@ Parcial2FA/
 
 `SanitizarEntrada` incluye: `limpiarCadena`, `limpiarEmail`, `limpiarUsuario`, `limpiarIdentificador`,
 `limpiarNombre`, `limpiarSexo`, `limpiarCodigo`, `limpiarSecreto` (base32) y `escaparHtml`.
-
----
-
-## Pasos de la guía y rúbrica
-
-### Guía del laboratorio
-
-| Guía | Dónde está |
-|---|---|
-| Paso 1: `ALTER TABLE usuarios ADD secret_2fa ... AFTER HashMagic` | `sql/01_crear_bd_y_tablas.sql` |
-| Paso 2: formulario Nombre, Apellido, Correo, contraseña (HashMagic), Sexo M/F | `registro.php` |
-| Paso 3: librería Google Authenticator | `composer.json`, `vendor/` |
-| Paso 4: generar secreto y QR | `clases/Autenticador2FA.php`, `qr_registro.php` |
-| Paso 5: verificar el código | `verificar_2fa.php` |
-| Act. 1: login con soporte 2FA | `login.php` + `verificar_2fa.php` |
-| Act. 2: generar y guardar `secret_2fa` | `registro.php` → `RepositorioUsuarios::crear()` |
-| Act. 3: mostrar el QR | `qr_registro.php` |
-| Act. 4: segunda pantalla de verificación | `verificar_2fa.php` |
-| Act. 5: validar el código antes del acceso completo | `comunes/bloque_Seguridad.php` |
-
-### Rúbrica del parcial (100 pts)
-
-| Criterio | Pts | Implementación | Captura |
-|---|---|---|---|
-| Usuarios con privilegios mínimos; mostrar privilegios y comando | 15 | `sql/02_…sql`, `privilegios.php` | 13, 14 |
-| Formulario de registro con validaciones | 5 | `registro.php`, `js/registro.js` | 01, 02, 03 |
-| Validar correo y usuario no duplicados (frontend) | 5 | `js/registro.js` + `ajax/verificar_usuario.php` | 06 |
-| Clase del formulario, métodos de mínima responsabilidad | 10 | `clases/FormularioRegistro.php` | — |
-| Sanitizar con métodos estáticos (mín. 3) | 10 | `clases/SanitizarEntrada.php` (9 métodos) | — |
-| Genera el código QR | 5 | `qr_registro.php` | 05 |
-| Inicia sesión y pide el código antes de entrar | 5 | `login.php` → `verificar_2fa.php` | 07, 09, 10 |
-| Otra sesión que confirma la fase del código | 5 | `session_regenerate_id(true)` en cada fase | 12 |
-| Interfaz para generar y validar hash (POO) | 5 | `IGeneradorHash.php`, `HashBcrypt.php` | — |
-| Tokens Anti-CSRF | 10 | `clases/CSRFProtection.php` | 04 |
-| Tablas con datos limpios (5 pts por tabla) | 10 | `usuarios`, `intentos_login` | 15, 16 |
-| Calidad del CSS | 10 | `css/estilo.css`: medidor de contraseña, ver/ocultar clave, barra de pasos | todas |
 
 ---
 
