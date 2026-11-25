@@ -30,7 +30,7 @@ final class RepositorioUsuarios
             'Usuario'    => $correo,
             'NombreUsuario' => $nombreUsuario,
             'HashMagic'  => $hash,
-            'secret_2fa' => $secret,
+            'secret_2fa' => SanitizarEntrada::limpiarSecreto($secret),
             'Sexo'       => $sexo,
         ]);
         return (int) $this->db->getConexion()->lastInsertId();
@@ -42,6 +42,10 @@ final class RepositorioUsuarios
         $stmt->bindValue(':id', $id, PDO::PARAM_INT);
         $stmt->execute();
         $fila = $stmt->fetch();
-        return $fila && $fila->secret_2fa !== null ? (string) $fila->secret_2fa : null;
+        if (!$fila || $fila->secret_2fa === null) {
+            return null;
+        }
+        $secret = SanitizarEntrada::limpiarSecreto((string) $fila->secret_2fa);
+        return $secret !== '' ? $secret : null;
     }
 }

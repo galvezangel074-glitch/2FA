@@ -1,5 +1,5 @@
 <?php
-// Criterio: clase con métodos ESTÁTICOS para sanitizar datos (mínimo 3). Aquí hay 6.
+// Criterio: clase con métodos ESTÁTICOS para sanitizar datos (mínimo 3). Aquí hay 9.
 // Amplía SanitizarEntrada::limpiarCadena() del repositorio EjemploLogin.
 class SanitizarEntrada
 {
@@ -49,6 +49,13 @@ class SanitizarEntrada
     public static function limpiarCodigo(?string $codigo): string
     {
         return substr(preg_replace('/\D+/', '', (string) $codigo) ?? '', 0, 6);
+    }
+
+    // 7. Secreto 2FA (base32): solo A-Z, 2-7 y "=". Si no cumple, devuelve vacío
+    public static function limpiarSecreto(?string $secret): string
+    {
+        $secret = strtoupper(trim((string) $secret));
+        return preg_match('/^[A-Z2-7=]+$/', $secret) === 1 ? $secret : '';
     }
 
     // 6. Salida a HTML (evita XSS al imprimir datos)

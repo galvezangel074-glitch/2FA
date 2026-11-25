@@ -18,6 +18,8 @@
     var estado = { nombre: false, apellido: false, correo: false, nombre_usuario: false, clave: false, confirmacion: false, sexo: false };
     var temporizador = null;
     var secuencia = 0;
+    var temporizadorUsuario = null;
+    var secuenciaUsuario = 0;
 
     function marcar(nombre, ok, mensaje) {
         var cont = document.getElementById('campo-' + nombre);
@@ -70,7 +72,23 @@
         var v = campos.nombre_usuario.value.trim();
         if (v === '') { return marcar('nombre_usuario', false, 'Este campo es obligatorio.'); }
         if (!/^[A-Za-z0-9._\-]{3,30}$/.test(v)) { return marcar('nombre_usuario', false, '3 a 30 caracteres: letras, números, punto, guion.'); }
-        marcar('nombre_usuario', true, '');
+        estado.nombre_usuario = false;
+        actualizarBoton();
+        document.getElementById('msg-nombre_usuario').textContent = 'Verificando disponibilidad…';
+        clearTimeout(temporizadorUsuario);
+        var mi = ++secuenciaUsuario;
+        temporizadorUsuario = setTimeout(function () {
+            fetch('ajax/verificar_usuario.php?tipo=usuario&usuario=' + encodeURIComponent(v.toLowerCase()), { headers: { 'Accept': 'application/json' } })
+                .then(function (r) { return r.json(); })
+                .then(function (d) {
+                    if (mi !== secuenciaUsuario) { return; }
+                    if (d.existe) { marcar('nombre_usuario', false, 'Este nombre de usuario ya está en uso.'); }
+                    else { marcar('nombre_usuario', true, 'Nombre de usuario disponible.'); }
+                })
+                .catch(function () {
+                    if (mi === secuenciaUsuario) { marcar('nombre_usuario', true, ''); }
+                });
+        }, 350);
     }
 
     function nivelClave(v) {
