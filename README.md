@@ -1,24 +1,54 @@
-# Parcial práctico 2FA — Desarrollo Web (UTP)
+<div align="center">
+
+<img src="docs/img/logo_utp.png" alt="Logo UTP" height="170">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<img src="docs/img/logo_fisc.png" alt="Logo FISC" height="170">
+
+# UNIVERSIDAD TECNOLÓGICA DE PANAMÁ
+
+**FACULTAD DE INGENIERÍA DE SISTEMAS COMPUTACIONALES**<br>
+**CAMPUS VÍCTOR LEVIS SASSO**<br>
+**DESARROLLO WEB**
+
+## 🔐 Parcial Práctico – Autenticación de dos factores (2FA)
+
+**Tema:** Programación segura – registro e inicio de sesión con Google Authenticator (TOTP)<br>
+**Lenguaje de programación:** PHP · **II Semestre 2026**<br>
+**Instructor:** Ing. Irina Fong<br>
+**Estudiante:** Angel Gálvez · **Grupo:** 1S3122
+
+<br>
+
+![PHP](https://img.shields.io/badge/PHP-8.3-777BB4?style=for-the-badge&logo=php&logoColor=white)
+![MySQL](https://img.shields.io/badge/MySQL-8.4-00758F?style=for-the-badge&logo=mysql&logoColor=white)
+![Apache](https://img.shields.io/badge/Apache-2.4-D22128?style=for-the-badge&logo=apache&logoColor=white)
+![WampServer](https://img.shields.io/badge/WampServer-64%20bits-E5334B?style=for-the-badge)
+![2FA](https://img.shields.io/badge/2FA-Google%20Authenticator-4285F4?style=for-the-badge&logo=google&logoColor=white)
+![OWASP](https://img.shields.io/badge/OWASP-TOP%2010-000000?style=for-the-badge&logo=owasp&logoColor=white)
+
+</div>
 
 Sistema de registro e inicio de sesión con **autenticación de dos factores (2FA)** hecho en
-**PHP + MySQL + Google Authenticator** (estándar TOTP). Universidad Tecnológica de Panamá,
-Facultad de Ingeniería en Sistemas, Desarrollo Web, II Semestre 2026.
+**PHP + MySQL + Google Authenticator** (estándar TOTP).
 
 La base de las clases (`mod_db`, `SanitizarEntrada`, `ValidacionLogin`, `loginfunciones`) viene del
 repositorio `EjemploLogin` visto en clase; aquí se amplió con 2FA, protección CSRF y validaciones.
 
-## Contenido
+---
 
-1. [Cómo funciona](#cómo-funciona)
-2. [Instalación](#instalación)
-3. [Recorrido con capturas](#recorrido-con-capturas)
-4. [Seguridad implementada](#seguridad-implementada)
-5. [Estructura del proyecto](#estructura-del-proyecto)
-6. [Notas y limitaciones](#notas-y-limitaciones)
+## 📑 Tabla de contenido
+
+1. [Cómo funciona](#como-funciona)
+2. [Instalación](#instalacion)
+3. [Recorrido con capturas](#capturas)
+4. [Seguridad implementada](#seguridad)
+5. [Estructura del proyecto](#estructura)
+6. [Notas y limitaciones](#notas)
 
 ---
 
-## Cómo funciona
+<a id="como-funciona"></a>
+
+## 🔄 Cómo funciona
 
 ```
 Registro ──► Escanear QR ──► Login (usuario + contraseña) ──► Código 2FA ──► Panel
@@ -36,7 +66,9 @@ registro.php  qr_registro.php   login.php                    verificar_2fa.php  
 
 ---
 
-## Instalación
+<a id="instalacion"></a>
+
+## ⚙️ Instalación
 
 **Requisitos:** PHP 8.0+ (con `pdo_mysql` y `mbstring`), MySQL 8, Apache (WAMP en Windows) y la app
 **Google Authenticator** en el celular. La librería `sonata-project/google-authenticator` ya viene en
@@ -59,7 +91,9 @@ Si algo falla, revisa `C:\wamp64\logs\php_error.log` y `C:\wamp64\logs\apache_er
 
 ---
 
-## Recorrido con capturas
+<a id="capturas"></a>
+
+## 📸 Recorrido con capturas
 
 Todas las capturas se tomaron ejecutando la aplicación real (WAMP, Edge y MySQL 8.4) con una cuenta de
 demostración (`demo.2fa@example.com`) que se eliminó después. Están en [`docs/capturas/`](docs/capturas/).
@@ -164,7 +198,9 @@ La contraseña se guarda como **hash bcrypt** (nunca en texto plano) y `secret_2
 
 ---
 
-## Seguridad implementada
+<a id="seguridad"></a>
+
+## 🛡️ Seguridad implementada
 
 | Protección | Cómo |
 |---|---|
@@ -180,7 +216,9 @@ La contraseña se guarda como **hash bcrypt** (nunca en texto plano) y `secret_2
 
 ---
 
-## Estructura del proyecto
+<a id="estructura"></a>
+
+## 🗂️ Estructura del proyecto
 
 ```
 Parcial2FA/
@@ -201,7 +239,7 @@ Parcial2FA/
 ├── config/                           # config.example.php (config.php no se sube a Git)
 ├── css/estilo.css  js/registro.js
 ├── sql/                              # 01 tablas, 02 usuarios MySQL, 03 migración
-├── docs/capturas/                    # capturas de este README
+├── docs/capturas/  docs/img/         # capturas y logos de este README
 └── vendor/                           # sonata-project/google-authenticator
 ```
 
@@ -210,7 +248,9 @@ Parcial2FA/
 
 ---
 
-## Notas y limitaciones
+<a id="notas"></a>
+
+## 📝 Notas y limitaciones
 
 - El QR se genera con `api.qrserver.com`, como en la guía: el secreto viaja a ese servicio. En producción
   conviene generarlo en el servidor.
