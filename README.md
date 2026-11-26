@@ -14,7 +14,7 @@
 **Tema:** Programación segura – registro e inicio de sesión con Google Authenticator (TOTP)<br>
 **Lenguaje de programación:** PHP · **II Semestre 2026**<br>
 **Instructor:** Ing. Irina Fong<br>
-**Estudiante:** Angel Gálvez · **Grupo:** 1S3122
+**Estudiantes:** Angel Gálvez y Moises Cordero · **Grupo:** 1S3122
 
 <br>
 
